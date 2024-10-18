@@ -29,10 +29,11 @@ def calculate_signal_timings(df):
     return road_stats['Road_No'], green_times, red_times
 
 # Real-time signal simulation
-def simulate_signals(road_numbers, green_times, red_times):
+def simulate_signals(road_numbers, green_times, red_times, cycles=5):
     start_time = datetime.strptime("08:00:00.000", "%H:%M:%S.%f")
 
-    while True:
+    for cycle in range(cycles):
+        print(f"\nCycle {cycle + 1}:")
         for index in range(len(road_numbers)):
             road = road_numbers[index]
             green_time = green_times[index]
@@ -41,14 +42,14 @@ def simulate_signals(road_numbers, green_times, red_times):
             # Calculate and print green signal time
             green_start = start_time
             green_end = start_time + timedelta(seconds=green_time)
-            print(f"\nRoad {road}: Green Signal from {green_start.strftime('%H:%M:%S.%f')[:-3]} to {green_end.strftime('%H:%M:%S.%f')[:-3]}.")
+            print(f"Road {road}: Green Signal from {green_start.strftime('%H:%M:%S')} to {green_end.strftime('%H:%M:%S')}.")
             
             time.sleep(green_time)  # Simulate green signal duration
             start_time = green_end  # Update start time for red signal
             
             # Calculate and print red signal time
             red_end = start_time + timedelta(seconds=red_time)
-            print(f"Road {road}: Red Signal from {start_time.strftime('%H:%M:%S.%f')[:-3]} to {red_end.strftime('%H:%M:%S.%f')[:-3]}.")
+            print(f"Road {road}: Red Signal from {start_time.strftime('%H:%M:%S')} to {red_end.strftime('%H:%M:%S')}.")
             
             time.sleep(red_time)  # Simulate red signal duration
             start_time = red_end  # Update start time for next cycle
